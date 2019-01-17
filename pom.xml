@@ -4,7 +4,7 @@
 
    <groupId>org.infinispan.doclets</groupId>
    <artifactId>infinispan-doclets</artifactId>
-   <version>1.0.0.Final</version>
+   <version>1.0.1-SNAPSHOT</version>
    <packaging>jar</packaging>
    <name>Infinispan Doclets Parent</name>
    <description>Infinispan Doclets Parent POM module</description>
@@ -46,7 +46,7 @@
       <connection>scm:git:git@github.com:infinispan/infinispan-doclets.git</connection>
       <developerConnection>scm:git:git@github.com:infinispan/infinispan-doclets.git</developerConnection>
       <url>https://github.com/infinispan/infinispan-doclets</url>
-     <tag>infinispan-doclets-1.0.0.Final</tag>
+     <tag>HEAD</tag>
   </scm>
    <issueManagement>
       <system>jira</system>
