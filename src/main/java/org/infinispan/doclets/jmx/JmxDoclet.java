@@ -94,7 +94,7 @@ public class JmxDoclet {
 
    private static String jmxTitle() {
       String s = "JMX Components";
-      if (title.length() == 0)
+      if (title == null || title.length() == 0)
          return s;
       else {
          s += " (" + title + ")";

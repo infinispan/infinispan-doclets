@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import org.infinispan.doclets.api.PublicAPIDoclet;
 import org.infinispan.doclets.jmx.JmxDoclet;
 
+import com.sun.javadoc.DocErrorReporter;
 import com.sun.javadoc.LanguageVersion;
 import com.sun.javadoc.RootDoc;
 import com.sun.tools.doclets.standard.Standard;
@@ -23,6 +24,21 @@ public class DocletMultiplexer {
 
    public static LanguageVersion languageVersion() {
       return LanguageVersion.JAVA_1_5;
+   }
+
+   public static boolean validOptions(String options[][], DocErrorReporter reporter) {
+      boolean valid = true;
+      for(Object doclet : doclets) {
+         try {
+            Method method = doclet.getClass().getMethod("validOptions", String[][].class, DocErrorReporter.class);
+            valid = valid && ((Boolean) method.invoke(doclet, options, reporter));
+         } catch (NoSuchMethodException e) {
+            // Ignore
+         } catch (Exception e) {
+            throw new RuntimeException(e);
+         }
+      }
+      return valid;
    }
 
    public static int optionLength(String option) {
@@ -47,6 +63,8 @@ public class DocletMultiplexer {
             Method method = doclet.getClass().getMethod("start", RootDoc.class);
             start = start && ((Boolean)method.invoke(doclet, root));
          } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
             root.printWarning(e.getMessage());
          }
       }
