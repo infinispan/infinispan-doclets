@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>org.infinispan.doclets</groupId>
    <artifactId>infinispan-doclets</artifactId>
-   <version>1.0.1-SNAPSHOT</version>
-   <packaging>jar</packaging>
-   <name>Infinispan Doclets Parent</name>
+   <version>1.0.2-SNAPSHOT</version>
+   <packaging>pom</packaging>
+   <name>Infinispan Doclets</name>
    <description>Infinispan Doclets Parent POM module</description>
    <url>http://www.infinispan.org</url>
    <organization>
@@ -46,8 +47,8 @@
       <connection>scm:git:git@github.com:infinispan/infinispan-doclets.git</connection>
       <developerConnection>scm:git:git@github.com:infinispan/infinispan-doclets.git</developerConnection>
       <url>https://github.com/infinispan/infinispan-doclets</url>
-     <tag>HEAD</tag>
-  </scm>
+      <tag>HEAD</tag>
+   </scm>
    <issueManagement>
       <system>jira</system>
       <url>https://issues.jboss.org/browse/ISPN</url>
@@ -80,7 +81,8 @@
       <!-- jboss repository urls -->
       <jboss.releases.repo.id>jboss-releases-repository</jboss.releases.repo.id>
       <jboss.releases.nexus.url>https://repository.jboss.org/nexus</jboss.releases.nexus.url>
-      <jboss.releases.repo.url>${jboss.releases.nexus.url}/service/local/staging/deploy/maven2/</jboss.releases.repo.url>
+      <jboss.releases.repo.url>${jboss.releases.nexus.url}/service/local/staging/deploy/maven2/
+      </jboss.releases.repo.url>
       <jboss.snapshots.repo.id>jboss-snapshots-repository</jboss.snapshots.repo.id>
       <jboss.snapshots.repo.url>${jboss.releases.nexus.url}/content/repositories/snapshots/</jboss.snapshots.repo.url>
    </properties>
@@ -95,32 +97,22 @@
             </plugin>
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-plugin-plugin</artifactId>
-               <version>${version.maven-plugin-plugin}</version>
-            </plugin>
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-clean-plugin</artifactId>
-               <version>2.6.1</version>
+               <version>3.1.0</version>
             </plugin>
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-install-plugin</artifactId>
-               <version>2.5.2</version>
-            </plugin>
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-help-plugin</artifactId>
-               <version>2.1.1</version>
+               <version>3.0.0-M1</version>
             </plugin>
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-deploy-plugin</artifactId>
-               <version>2.8.1</version>
+               <version>3.0.0-M1</version>
             </plugin>
             <plugin>
                <artifactId>maven-scm-plugin</artifactId>
-               <version>1.9.5</version>
+               <version>1.11.1</version>
                <configuration>
                   <tag>${project.version}</tag>
                </configuration>
@@ -128,7 +120,7 @@
             <plugin>
                <groupId>org.codehaus.mojo</groupId>
                <artifactId>versions-maven-plugin</artifactId>
-               <version>2.5</version>
+               <version>2.7</version>
                <configuration>
                   <generateBackupPoms>false</generateBackupPoms>
                   <processAllModules>true</processAllModules>
@@ -162,329 +154,36 @@
             </plugin>
             <plugin>
                <artifactId>maven-compiler-plugin</artifactId>
-               <version>3.7.0-jboss-1</version>
+               <version>3.8.0</version>
                <configuration>
-                  <source>1.8</source>
-                  <target>1.8</target>
                   <encoding>UTF-8</encoding>
                   <excludes>
                      <exclude>**/package-info.java</exclude>
                   </excludes>
                </configuration>
             </plugin>
+            <plugin>
+               <artifactId>maven-enforcer-plugin</artifactId>
+               <version>3.0.0-M1</version>
+               <configuration>
+                  <rules>
+                     <requireMavenVersion>
+                        <version>3.5.0</version>
+                     </requireMavenVersion>
+                     <requireJavaVersion>
+                        <version>11</version>
+                     </requireJavaVersion>
+                  </rules>
+               </configuration>
+            </plugin>
          </plugins>
       </pluginManagement>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <version>3.0.0-M1</version>
-            <executions>
-               <execution>
-                  <id>enforce-java</id>
-                  <goals>
-                     <goal>enforce</goal>
-                  </goals>
-                  <configuration>
-                     <rules>
-                        <requireJavaVersion>
-                           <version>[1.8,)</version>
-                        </requireJavaVersion>
-                        <requireMavenVersion>
-                           <version>[3.2.1,)</version>
-                        </requireMavenVersion>
-                     </rules>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>3.0.0</version>
-            <executions>
-               <execution>
-                  <id>timestamp-property</id>
-                  <goals>
-                     <goal>timestamp-property</goal>
-                  </goals>
-                  <phase>validate</phase>
-                  <configuration>
-                     <name>current.year</name>
-                     <pattern>yyyy</pattern>
-                     <locale>en_US</locale>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>buildnumber-maven-plugin</artifactId>
-            <version>1.4</version>
-            <executions>
-               <execution>
-                  <phase>validate</phase>
-                  <goals>
-                     <goal>create</goal>
-                  </goals>
-                  <configuration>
-                     <doCheck>false</doCheck>
-                     <doUpdate>false</doUpdate>
-                     <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <configuration>
-               <encoding>UTF-8</encoding>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-               <archive>
-                  <manifest>
-                     <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                     <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                  </manifest>
-               </archive>
-            </configuration>
-         </plugin>
-      </plugins>
    </build>
 
-   <profiles>
-      <profile>
-         <id>default-tools.jar</id>
-         <activation>
-            <file>
-               <exists>${java.home}/../lib/tools.jar</exists>
-            </file>
-         </activation>
-         <dependencies>
-            <dependency>
-               <groupId>com.sun</groupId>
-               <artifactId>tools</artifactId>
-               <version>1.8</version>
-               <scope>system</scope>
-               <systemPath>${java.home}/../lib/tools.jar</systemPath>
-            </dependency>
-         </dependencies>
-      </profile>
-      <profile>
-         <!-- nexus-staging-maven-plugin blocks maven-deploy-plugin -->
-         <id>nexus-staging</id>
-         <activation>
-            <property><name>!skipNexusStaging</name></property>
-         </activation>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>org.sonatype.plugins</groupId>
-                  <artifactId>nexus-staging-maven-plugin</artifactId>
-                  <extensions>true</extensions>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-      <profile>
-         <!-- Profile used to compile the default (Java 8) code with a Java 9 or later compiler -->
-         <id>jigsaw</id>
-         <activation>
-            <jdk>[9,)</jdk>
-         </activation>
-         <properties>
-            <testjvm.jigsawargs>
-               -Dsun.reflect.debugModuleAccessChecks=true
-               --add-opens=java.base/java.lang=ALL-UNNAMED
-               --add-opens=java.base/java.util=ALL-UNNAMED
-               --add-opens=java.base/java.io=ALL-UNNAMED
-               --add-opens=java.base/java.lang.invoke=ALL-UNNAMED
-               --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
-               --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
-               --add-opens=java.base/java.time=ALL-UNNAMED
-               --add-opens=java.base/java.nio=ALL-UNNAMED
-               --add-opens=java.base/jdk.internal.ref=ALL-UNNAMED
-               --add-exports=java.security.sasl/com.sun.security.sasl=ALL-UNNAMED
-               --add-opens=java.base/java.text=ALL-UNNAMED
-               --add-opens=java.desktop/java.awt.font=ALL-UNNAMED
-               --add-opens=java.base/java.security=ALL-UNNAMED
-               --add-exports=jdk.security.jgss/com.sun.security.sasl.gsskerb=ALL-UNNAMED
-               --add-exports=java.base/sun.nio.ch=ALL-UNNAMED
-               --add-opens=java.base/sun.nio.ch=ALL-UNNAMED
-               --add-exports=java.security.sasl/com.sun.security.sasl.digest=ALL-UNNAMED
-               --add-exports=java.security.sasl/com.sun.security.sasl.ntlm=ALL-UNNAMED
-               --add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED
-               --add-opens=java.management/javax.management=ALL-UNNAMED
-               --add-exports=java.management/com.sun.jmx.mbeanserver=ALL-UNNAMED
-               --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
-            </testjvm.jigsawargs>
-         </properties>
-         <build>
-            <plugins>
-               <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-dependency-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <id>jdk-misc</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                           <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                           <!-- Download org.jboss:jdk-misc to the target directory -->
-                           <artifactItems>
-                              <artifactItem>
-                                 <groupId>org.jboss</groupId>
-                                 <artifactId>jdk-misc</artifactId>
-                                 <version>2.Final</version>
-                                 <type>jar</type>
-                                 <overWrite>true</overWrite>
-                                 <outputDirectory>${project.build.directory}</outputDirectory>
-                                 <destFileName>jdk-misc.jar</destFileName>
-                              </artifactItem>
-                           </artifactItems>
-                        </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-               <plugin>
-                  <artifactId>maven-compiler-plugin</artifactId>
-                  <configuration>
-                     <compilerArgument combine.children="append">-XDignore.symbol.file</compilerArgument>
-                     <!-- Forking is necessary to allow for the compiler args to be picked up. -->
-                     <fork combine.children="append">true</fork>
-                     <release>8</release>
-                     <!-- Include a skeleton implementation of some classes removed in JDK10+ -->
-                     <additionalClasspathElements>
-                        <additionalClasspathElement>${project.build.directory}/jdk-misc.jar</additionalClasspathElement>
-                     </additionalClasspathElements>
-                  </configuration>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-      <profile>
-         <!-- Profile used to compile Java 11-specific classes. It requires that the java10.home property points to a JDK 10 installation -->
-         <id>jdk11-compile</id>
-         <activation>
-            <property>
-               <name>java11.home</name>
-            </property>
-            <file>
-               <exists>${basedir}/src/main/java11</exists>
-            </file>
-         </activation>
-         <build>
-            <plugins>
-               <plugin>
-                  <artifactId>maven-compiler-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <id>java11-compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                           <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                           <executable>${java11.home}/bin/javac</executable>
-                           <release>11</release>
-                           <compileSourceRoots>${project.basedir}/src/main/java10</compileSourceRoots>
-                           <outputDirectory>${project.build.outputDirectory}/META-INF/versions/10</outputDirectory>
-                           <additionalClasspathElements>
-                              <additionalClasspathElement>${project.build.outputDirectory}</additionalClasspathElement>
-                           </additionalClasspathElements>
-                        </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-               <plugin>
-                  <artifactId>maven-jar-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <id>default-jar</id>
-                        <goals>
-                           <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                           <archive>
-                              <manifestEntries>
-                                 <Multi-Release>true</Multi-Release>
-                              </manifestEntries>
-                           </archive>
-                        </configuration>
-                     </execution>
-                     <execution>
-                        <id>build-test-jar</id>
-                        <goals>
-                           <goal>test-jar</goal>
-                        </goals>
-                        <configuration>
-                           <archive>
-                              <manifestEntries>
-                                 <Multi-Release>true</Multi-Release>
-                              </manifestEntries>
-                           </archive>
-                        </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-      <profile>
-         <id>jdk11-test-compile</id>
-         <activation>
-            <property>
-               <name>java11.home</name>
-            </property>
-            <file>
-               <exists>${basedir}/src/test/java11</exists>
-            </file>
-         </activation>
-         <build>
-            <plugins>
-               <plugin>
-                  <artifactId>maven-compiler-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <id>java11-test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                           <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                           <release>11</release>
-                           <compileSourceRoots>${project.basedir}/src/test/java10</compileSourceRoots>
-                           <outputDirectory>${project.build.testOutputDirectory}/META-INF/versions/10</outputDirectory>
-                        </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-               <plugin>
-                  <artifactId>maven-surefire-plugin</artifactId>
-                  <executions>
-                     <execution>
-                     </execution>
-                  </executions>
-               </plugin>
-               <plugin>
-                  <artifactId>maven-jar-plugin</artifactId>
-                  <configuration>
-                     <archive>
-                        <manifestEntries>
-                           <Multi-Release>true</Multi-Release>
-                        </manifestEntries>
-                     </archive>
-                  </configuration>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-   </profiles>
+   <modules>
+      <module>common</module>
+      <module>java8</module>
+      <module>java11</module>
+      <module>all</module>
+   </modules>
 </project>

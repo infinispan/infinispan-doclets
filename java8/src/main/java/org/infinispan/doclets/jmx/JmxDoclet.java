@@ -2,7 +2,6 @@ package org.infinispan.doclets.jmx;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,9 +57,8 @@ public class JmxDoclet {
       // sort components alphabetically
       Collections.sort(mbeans);
 
-      HtmlGenerator generator = new JmxHtmlGenerator(encoding, jmxTitle(), bottom, footer, header,
-            "JMX components exposed by Infinispan", Arrays.asList("JMX", "Infinispan", "Data Grids", "Documentation",
-                  "Reference", "MBeans", "Management", "Console"), mbeans);
+      HtmlGenerator generator = new JmxHtmlGenerator(jmxTitle(),"JMX components exposed by Infinispan",
+            "JMX, Infinispan, Data Grids, Documentation, Reference, MBeans, Management, Console", mbeans);
       generator.generateHtml(new File(outputDirectory, "jmxComponents.html").getAbsolutePath());
 
       return true;
@@ -129,7 +127,7 @@ public class JmxDoclet {
                setNameDesc(a.elementValues(), o);
                o.returnType = method.returnType().simpleTypeName();
                for (Parameter p : method.parameters())
-                  o.addParam(p.type().simpleTypeName());
+                  o.addParam(p.type().simpleTypeName(), p.name());
                mbc.operations.add(o);
 
             } else if (annotationName.equals(MANAGED_ATTRIBUTE_CLASSNAME)) {

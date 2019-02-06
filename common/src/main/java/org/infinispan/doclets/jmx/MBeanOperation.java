@@ -9,15 +9,14 @@ package org.infinispan.doclets.jmx;
 public class MBeanOperation extends JmxComponent {
    public String returnType = "void";
    public String signature = "";
-   int n = 0;
 
    @Override
    public String toString() {
       return "Operation(name = " + name + ", desc = " + desc + ", sig = " + signature + ", retType = " + returnType + ")";
    }
 
-   void addParam(String paramType) {
+   void addParam(String paramType, String paramName) {
       if (signature.length() != 0) signature += ", ";
-      signature += paramType + " p" + n++;
+      signature += paramType + " " + paramName;
    }
 }

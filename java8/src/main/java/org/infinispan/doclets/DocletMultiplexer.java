@@ -2,7 +2,6 @@ package org.infinispan.doclets;
 
 import java.lang.reflect.Method;
 
-import org.infinispan.doclets.api.PublicAPIDoclet;
 import org.infinispan.doclets.jmx.JmxDoclet;
 
 import com.sun.javadoc.DocErrorReporter;
@@ -13,7 +12,7 @@ import com.sun.tools.javadoc.Main;
 
 public class DocletMultiplexer {
    private static final Object doclets[] = {
-         new PublicAPIDoclet(),
+         new Standard(),
          new JmxDoclet()
    };
 
