@@ -50,7 +50,7 @@ public class JmxHtmlGenerator extends HtmlGenerator {
             w.println("<tr><th class=\"colFirst\" scope=\"col\">Name</th><th class=\"colSecond\" scope=\"col\">Description</th><th class=\"colSecond\" scope=\"col\">Type</th><th class=\"colLast\" scope=\"col\">Writable</th></tr>");
             w.println("<tbody>");
             row = 0;
-            for (MBeanAttribute attr : mbean.attributes) {
+            for (MBeanAttribute attr : mbean.attributes.values()) {
                w.printf("<tr class=\"%s\">", rowClass(row++));
                w.printf("<td><tt>%s</tt></td>", attr.name);
                w.printf("<td>%s</td>", attr.desc);
@@ -68,7 +68,7 @@ public class JmxHtmlGenerator extends HtmlGenerator {
             w.println("<tr><th class=\"colFirst\" scope=\"col\">Name</th><th  class=\"colSecond\" scope=\"col\">Description</th><th class=\"colLast\" scope=\"col\">Signature</th></tr>");
             w.println("<tbody>");
             row = 0;
-            for (MBeanOperation operation : mbean.operations) {
+            for(MBeanOperation operation : mbean.operations.values()) {
                w.printf("<tr class=\"%s\">", rowClass(row++));
                w.printf("<td><tt>%s</tt></td>", operation.name);
                w.printf("<td>%s</td>", operation.desc);

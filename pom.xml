@@ -4,7 +4,7 @@
    <modelVersion>4.0.0</modelVersion>
 
    <groupId>org.infinispan.doclets</groupId>
-   <artifactId>infinispan-doclets</artifactId>
+   <artifactId>infinispan-doclets-parent</artifactId>
    <version>1.0.2-SNAPSHOT</version>
    <packaging>pom</packaging>
    <name>Infinispan Doclets</name>

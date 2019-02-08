@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <groupId>org.infinispan.doclets</groupId>
+      <artifactId>infinispan-doclets-parent</artifactId>
+      <version>1.0.2-SNAPSHOT</version>
+      <relativePath>../pom.xml</relativePath>
+   </parent>
+   <artifactId>infinispan-doclets-test</artifactId>
+   <packaging>jar</packaging>
+   <name>Infinispan Doclets test</name>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.infinispan.doclets</groupId>
+         <artifactId>infinispan-doclets</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <plugins>
+         <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.0.1</version>
+            <executions>
+               <execution>
+                  <id>sample</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>test-jar</goal>
+                  </goals>
+                  <configuration>
+                     <docletArtifact>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>${project.artifactId}</artifactId>
+                        <version>${project.version}</version>
+                     </docletArtifact>
+                     <doclet>org.infinispan.doclets.DocletMultiplexer</doclet>
+                     <useStandardDocletOptions>false</useStandardDocletOptions>
+                     <doctitle>Sample</doctitle>
+                     <additionalJOptions>
+                        <additionalJOption>-J-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8787</additionalJOption>
+                     </additionalJOptions>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+
+</project>

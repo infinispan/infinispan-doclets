@@ -57,7 +57,7 @@ public class JmxDoclet {
       // sort components alphabetically
       Collections.sort(mbeans);
 
-      HtmlGenerator generator = new JmxHtmlGenerator(jmxTitle(),"JMX components exposed by Infinispan",
+      HtmlGenerator generator = new JmxHtmlGenerator(jmxTitle(), "JMX components exposed by Infinispan",
             "JMX, Infinispan, Data Grids, Documentation, Reference, MBeans, Management, Console", mbeans);
       generator.generateHtml(new File(outputDirectory, "jmxComponents.html").getAbsolutePath());
 
@@ -102,9 +102,7 @@ public class JmxDoclet {
 
    private static MBeanComponent toJmxComponent(ClassDoc cd) {
       boolean isMBean = false;
-      MBeanComponent mbc = new MBeanComponent();
-      mbc.className = cd.qualifiedTypeName();
-      mbc.name = cd.typeName();
+      MBeanComponent mbc = new MBeanComponent(cd.qualifiedName(), cd.typeName());
 
       for (AnnotationDesc a : cd.annotations()) {
          AnnotationTypeDoc atd = a.annotationType();
@@ -122,29 +120,23 @@ public class JmxDoclet {
             String annotationName = a.annotationType().qualifiedTypeName();
             if (annotationName.equals(MANAGED_OPERATION_CLASSNAME)) {
                isMBean = true;
-               MBeanOperation o = new MBeanOperation();
-               o.name = method.name();
+               MBeanOperation o = mbc.operations.computeIfAbsent(method.name(), name -> new MBeanOperation(name));
                setNameDesc(a.elementValues(), o);
                o.returnType = method.returnType().simpleTypeName();
                for (Parameter p : method.parameters())
                   o.addParam(p.type().simpleTypeName(), p.name());
-               mbc.operations.add(o);
 
             } else if (annotationName.equals(MANAGED_ATTRIBUTE_CLASSNAME)) {
                isMBean = true;
-               MBeanAttribute attr = new MBeanAttribute();
-
+               MBeanAttribute attr = mbc.attributes.computeIfAbsent(fromBeanConvention(method.name()), name -> new MBeanAttribute(name));
                // if this is a getter, look at the return type
                if (method.name().startsWith("get") || method.name().startsWith("is")) {
                   attr.type = method.returnType().simpleTypeName();
                } else if (method.parameters().length > 0) {
                   attr.type = method.parameters()[0].type().simpleTypeName();
                }
-
-               attr.name = fromBeanConvention(method.name());
                setNameDesc(a.elementValues(), attr);
                setWritable(a.elementValues(), attr);
-               mbc.attributes.add(attr);
             }
          }
       }
@@ -157,20 +149,15 @@ public class JmxDoclet {
 
             if (annotationName.equals(MANAGED_ATTRIBUTE_CLASSNAME)) {
                isMBean = true;
-               MBeanAttribute attr = new MBeanAttribute();
-               attr.name = field.name();
+               MBeanAttribute attr = mbc.attributes.computeIfAbsent(field.name(), name -> new MBeanAttribute(name));
                attr.type = field.type().simpleTypeName();
                setNameDesc(a.elementValues(), attr);
                setWritable(a.elementValues(), attr);
-               mbc.attributes.add(attr);
             }
          }
       }
 
       if (isMBean) {
-         Collections.sort(mbc.attributes);
-         Collections.sort(mbc.operations);
-
          return mbc;
       } else {
          return null;
@@ -191,11 +178,7 @@ public class JmxDoclet {
 
    private static void setNameDesc(AnnotationDesc.ElementValuePair[] evps, JmxComponent mbc) {
       for (AnnotationDesc.ElementValuePair evp : evps) {
-         if (evp.element().name().equals("objectName")) {
-            mbc.name = evp.value().value().toString();
-         } else if (evp.element().name().equals("name")) {
-            mbc.name = evp.value().value().toString();
-         } else if (evp.element().name().equals("description")) {
+         if (evp.element().name().equals("description")) {
             mbc.desc = evp.value().value().toString();
          }
       }

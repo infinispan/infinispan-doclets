@@ -55,7 +55,8 @@ public class DocletMultiplexer {
       return Standard.optionLength(option);
    }
 
-   public static boolean start(RootDoc root) throws java.io.IOException {
+   public static boolean start(RootDoc root) {
+      System.err.println("OLD DOCLETMULTIPLEXER");
       boolean start = true;
       for(Object doclet : doclets) {
          try {

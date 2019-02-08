@@ -1,7 +1,7 @@
 package org.infinispan.doclets.jmx;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * * An MBean component
@@ -11,8 +11,13 @@ import java.util.List;
  */
 public class MBeanComponent extends JmxComponent {
    public String className;
-   public List<MBeanOperation> operations = new LinkedList<MBeanOperation>();
-   public List<MBeanAttribute> attributes = new LinkedList<MBeanAttribute>();
+   public Map<String, MBeanOperation> operations = new TreeMap<>();
+   public Map<String, MBeanAttribute> attributes = new TreeMap<>();
+
+   public MBeanComponent(String className, String name) {
+      super(name);
+      this.className = className;
+   }
 
    @Override
    public String toString() {

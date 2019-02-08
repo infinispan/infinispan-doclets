@@ -28,7 +28,7 @@ public class DocletMultiplexer implements Doclet {
 
    @Override
    public String getName() {
-      return "Multiplexer";
+      return this.getClass().getSimpleName();
    }
 
    @Override

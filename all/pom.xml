@@ -5,30 +5,19 @@
 
    <parent>
       <groupId>org.infinispan.doclets</groupId>
-      <artifactId>infinispan-doclets</artifactId>
+      <artifactId>infinispan-doclets-parent</artifactId>
       <version>1.0.2-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
-   <artifactId>infinispan-doclets-all</artifactId>
+   <artifactId>infinispan-doclets</artifactId>
    <packaging>jar</packaging>
-   <name>Infinispan Doclets Assembler</name>
+   <name>Infinispan Doclets</name>
 
    <build>
       <plugins>
          <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <version>3.1.1</version>
-            <configuration>
-               <appendAssemblyId>false</appendAssemblyId>
-               <descriptors>
-                  <descriptor>src/assembly/all.xml</descriptor>
-               </descriptors>
-               <archive>
-                  <manifestEntries>
-                     <Multi-Release>true</Multi-Release>
-                  </manifestEntries>
-               </archive>
-            </configuration>
             <dependencies>
                <dependency>
                   <groupId>org.codehaus.plexus</groupId>
@@ -38,11 +27,22 @@
             </dependencies>
             <executions>
                <execution>
-                  <id>make-assembly</id>
+                  <id>all</id>
                   <phase>package</phase>
                   <goals>
                      <goal>single</goal>
                   </goals>
+                  <configuration>
+                     <appendAssemblyId>false</appendAssemblyId>
+                     <descriptors>
+                        <descriptor>src/assembly/all.xml</descriptor>
+                     </descriptors>
+                     <archive>
+                        <manifestEntries>
+                           <Multi-Release>true</Multi-Release>
+                        </manifestEntries>
+                     </archive>
+                  </configuration>
                </execution>
             </executions>
          </plugin>

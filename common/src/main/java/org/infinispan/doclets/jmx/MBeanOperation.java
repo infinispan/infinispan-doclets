@@ -10,6 +10,10 @@ public class MBeanOperation extends JmxComponent {
    public String returnType = "void";
    public String signature = "";
 
+   public MBeanOperation(String name) {
+      super(name);
+   }
+
    @Override
    public String toString() {
       return "Operation(name = " + name + ", desc = " + desc + ", sig = " + signature + ", retType = " + returnType + ")";

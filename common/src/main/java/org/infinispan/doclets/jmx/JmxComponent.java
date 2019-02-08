@@ -7,8 +7,12 @@ package org.infinispan.doclets.jmx;
  * @since 4.0
  */
 public abstract class JmxComponent implements Comparable<JmxComponent> {
-   public String name;
+   public final String name;
    public String desc = "";
+
+   protected JmxComponent(String name) {
+      this.name = name;
+   }
 
    @Override
    public int compareTo(JmxComponent other) {
