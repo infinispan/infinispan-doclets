@@ -7,7 +7,7 @@
    <artifactId>infinispan-doclets-parent</artifactId>
    <version>1.0.2-SNAPSHOT</version>
    <packaging>pom</packaging>
-   <name>Infinispan Doclets</name>
+   <name>Infinispan Doclets Parent</name>
    <description>Infinispan Doclets Parent POM module</description>
    <url>http://www.infinispan.org</url>
    <organization>
@@ -91,24 +91,24 @@
       <pluginManagement>
          <plugins>
             <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-source-plugin</artifactId>
                <version>3.0.1</version>
             </plugin>
             <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-clean-plugin</artifactId>
                <version>3.1.0</version>
             </plugin>
             <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-install-plugin</artifactId>
                <version>3.0.0-M1</version>
             </plugin>
             <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-deploy-plugin</artifactId>
                <version>3.0.0-M1</version>
+            </plugin>
+            <plugin>
+               <artifactId>maven-javadoc-plugin</artifactId>
+               <version>3.0.1</version>
             </plugin>
             <plugin>
                <artifactId>maven-scm-plugin</artifactId>
@@ -178,6 +178,25 @@
             </plugin>
          </plugins>
       </pluginManagement>
+      <plugins>
+         <plugin>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>sources</id>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>jar-no-fork</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <extensions>true</extensions>
+         </plugin>
+      </plugins>
    </build>
 
    <modules>
