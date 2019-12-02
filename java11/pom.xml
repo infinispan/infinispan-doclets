@@ -11,13 +11,29 @@
    </parent>
    <artifactId>infinispan-doclets-java11</artifactId>
    <packaging>jar</packaging>
-   <name>Infinispan Doclets for Java 11</name>
+   <name>Infinispan Doclets</name>
+   <description>
+      This doclet generates the standard HTML API docs and also the JMX components documentation. It requires the JDK
+      11+ runtime.
+   </description>
+
+   <properties>
+      <version.net.bytebuddy>1.9.12</version.net.bytebuddy>
+      <version.maven.shade>3.2.1</version.maven.shade>
+   </properties>
 
    <dependencies>
       <dependency>
          <groupId>org.infinispan.doclets</groupId>
          <artifactId>infinispan-doclets-common</artifactId>
          <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>net.bytebuddy</groupId>
+         <artifactId>byte-buddy</artifactId>
+         <version>${version.net.bytebuddy}</version>
+         <optional>true</optional>
       </dependency>
    </dependencies>
 
@@ -29,12 +45,38 @@
                <release>11</release>
             </configuration>
          </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>${version.maven.shade}</version>
+            <executions>
+               <execution>
+                  <id>none-default</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>shade</goal>
+                  </goals>
+                  <configuration>
+                     <minimizeJar>true</minimizeJar>
+                     <relocations>
+                        <relocation>
+                           <pattern>net.bytebuddy</pattern>
+                           <shadedPattern>org.infinispan.doclets.bytebuddy</shadedPattern>
+                        </relocation>
+                     </relocations>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
          <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
                <skip>true</skip>
             </configuration>
          </plugin>
+
          <plugin>
             <artifactId>maven-deploy-plugin</artifactId>
             <configuration>
