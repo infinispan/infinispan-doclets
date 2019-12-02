@@ -23,6 +23,8 @@
 
    <build>
       <plugins>
+
+         <!-- Sample invocation of our custom doclet -->
          <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.0.1</version>
@@ -34,16 +36,34 @@
                      <goal>test-jar</goal>
                   </goals>
                   <configuration>
+                     <skip>${skipTests}</skip>
                      <docletArtifact>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>${project.artifactId}</artifactId>
+                        <artifactId>infinispan-doclets-java11</artifactId>
                         <version>${project.version}</version>
                      </docletArtifact>
                      <doclet>org.infinispan.doclets.DocletMultiplexer</doclet>
-                     <useStandardDocletOptions>false</useStandardDocletOptions>
+                     <useStandardDocletOptions>true</useStandardDocletOptions>
                      <doctitle>Sample</doctitle>
+                     <!-- Declare our custom javadoc tags and provide a replacement text for them to be used just in case exclusion fails. -->
+                     <tags>
+                        <tag>
+                           <name>public</name>
+                           <placement>a</placement>
+                           <head>&lt;div class="deprecationBlock"&gt;&lt;b&gt;Public API&lt;/b&gt;&lt;/div&gt;</head>
+                        </tag>
+                        <tag>
+                           <name>private</name>
+                           <placement>a</placement>
+                           <head>&lt;div class="deprecationBlock"&gt;&lt;b&gt;THIS IS NOT PUBLIC API! This is a private implementation detail and must not be referenced by user code.&lt;/b&gt;&lt;/div&gt;</head>
+                        </tag>
+                     </tags>
                      <additionalJOptions>
-                        <additionalJOption>-J-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8787</additionalJOption>
+                        <!-- DocletMultiplexer needs access to javadoc module internals -->
+                        <additionalJOption>-J--add-opens</additionalJOption>
+                        <additionalJOption>-Jjdk.javadoc/jdk.javadoc.internal.tool=ALL-UNNAMED</additionalJOption>
+                        <!-- Uncomment to enable remote debugging -->
+                        <!-- <additionalJOption>-J-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8787</additionalJOption> -->
                      </additionalJOptions>
                   </configuration>
                </execution>

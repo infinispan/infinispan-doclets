@@ -21,7 +21,6 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
-import org.infinispan.doclets.LambdaOption;
 import org.infinispan.doclets.html.HtmlGenerator;
 
 import com.sun.source.doctree.DocCommentTree;
