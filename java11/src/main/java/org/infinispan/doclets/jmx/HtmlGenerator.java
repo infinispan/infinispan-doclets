@@ -1,4 +1,4 @@
-package org.infinispan.doclets.html;
+package org.infinispan.doclets.jmx;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -13,15 +13,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Generates HTML documents
+ * Generates HTML documents.
  *
  * @author Tristan Tarrant
  */
-public abstract class HtmlGenerator {
+abstract class HtmlGenerator {
 
    private final Map<String, String> subs = new HashMap<>();
 
-   public HtmlGenerator(String title, String description, String keywords) {
+   HtmlGenerator(String title, String description, String keywords) {
       subs.put("title", title);
       subs.put("description", description);
       subs.put("keywords", keywords);

@@ -24,12 +24,6 @@
 
    <dependencies>
       <dependency>
-         <groupId>org.infinispan.doclets</groupId>
-         <artifactId>infinispan-doclets-common</artifactId>
-         <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
          <groupId>net.bytebuddy</groupId>
          <artifactId>byte-buddy</artifactId>
          <version>${version.net.bytebuddy}</version>
