@@ -9,6 +9,7 @@
    <packaging>pom</packaging>
    <name>Infinispan Doclets</name>
    <description>Infinispan Doclets Parent POM module</description>
+
    <url>http://www.infinispan.org</url>
    <organization>
       <name>JBoss, a division of Red Hat</name>
@@ -81,8 +82,7 @@
       <!-- jboss repository urls -->
       <jboss.releases.repo.id>jboss-releases-repository</jboss.releases.repo.id>
       <jboss.releases.nexus.url>https://repository.jboss.org/nexus</jboss.releases.nexus.url>
-      <jboss.releases.repo.url>${jboss.releases.nexus.url}/service/local/staging/deploy/maven2/
-      </jboss.releases.repo.url>
+      <jboss.releases.repo.url>${jboss.releases.nexus.url}/service/local/staging/deploy/maven2/</jboss.releases.repo.url>
       <jboss.snapshots.repo.id>jboss-snapshots-repository</jboss.snapshots.repo.id>
       <jboss.snapshots.repo.url>${jboss.releases.nexus.url}/content/repositories/snapshots/</jboss.snapshots.repo.url>
    </properties>
@@ -200,10 +200,7 @@
    </build>
 
    <modules>
-      <module>common</module>
-      <module>java8</module>
       <module>java11</module>
-      <module>all</module>
       <module>test</module>
    </modules>
 </project>

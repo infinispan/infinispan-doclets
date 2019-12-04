@@ -3,13 +3,11 @@ package org.infinispan.doclets.jmx;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.infinispan.doclets.html.HtmlGenerator;
-
 final class JmxHtmlGenerator extends HtmlGenerator {
    private final String title;
    private final List<MBeanComponent> components;
 
-   public JmxHtmlGenerator(String title, String description, String keywords, List<MBeanComponent> components) {
+   JmxHtmlGenerator(String title, String description, String keywords, List<MBeanComponent> components) {
       super(title, description, keywords);
       this.title = title;
       this.components = components;

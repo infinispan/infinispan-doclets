@@ -16,7 +16,7 @@
    <dependencies>
       <dependency>
          <groupId>org.infinispan.doclets</groupId>
-         <artifactId>infinispan-doclets</artifactId>
+         <artifactId>infinispan-doclets-java11</artifactId>
          <version>${project.version}</version>
       </dependency>
    </dependencies>
