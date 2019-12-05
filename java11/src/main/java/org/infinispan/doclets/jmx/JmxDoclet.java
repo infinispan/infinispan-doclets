@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,48 +32,47 @@ import jdk.javadoc.doclet.DocletEnvironment;
 import jdk.javadoc.doclet.Reporter;
 
 /**
- * A Doclet that generates a guide to all JMX components exposed by Infinispan
+ * A Doclet that generates a guide to all JMX components exposed by Infinispan (and properly annotated) .
  *
  * @author Manik Surtani
  * @author Tristan Tarrant
  * @since 4.0
  */
-public class JmxDoclet implements Doclet {
+public final class JmxDoclet implements Doclet {
+
    public static final String MANAGED_ATTRIBUTE_CLASSNAME = "org.infinispan.jmx.annotations.ManagedAttribute";
    public static final String MANAGED_OPERATION_CLASSNAME = "org.infinispan.jmx.annotations.ManagedOperation";
    public static final String MBEAN_CLASSNAME = "org.infinispan.jmx.annotations.MBean";
 
-   static String outputDirectory;
-   static String title;
+   private static String outputDirectory;
+   private static String title;
 
    private static String jmxTitle() {
       String s = "JMX Components";
-      if (title == null || title.length() == 0)
-         return s;
-      else {
+      if (title != null && !title.isEmpty()) {
          s += " (" + title + ")";
-         return s;
       }
+      return s;
    }
 
    private static MBeanComponent fromMXBeanInterface(TypeElement cd, DocTrees docTrees) {
       MBeanComponent mbc = new MBeanComponent(cd.getQualifiedName().toString(), cd.getSimpleName().toString());
       mbc.desc = docTreeToText(docTrees.getDocCommentTree(cd));
 
-      cd.getEnclosedElements().stream().forEach(e -> {
+      cd.getEnclosedElements().forEach(e -> {
          if (e instanceof ExecutableElement) {
             ExecutableElement ee = (ExecutableElement) e;
 
             String methodName = ee.getSimpleName().toString();
             if (methodName.startsWith("get") || methodName.startsWith("is")) {
-               MBeanAttribute attr = mbc.attributes.computeIfAbsent(fromBeanConvention(methodName), name -> new MBeanAttribute(name));
+               MBeanAttribute attr = mbc.attributes.computeIfAbsent(fromBeanConvention(methodName), MBeanAttribute::new);
                attr.type = ee.getReturnType().toString();
                attr.desc = docTreeToText(docTrees.getDocCommentTree(e));
             } else if (methodName.startsWith("set")) {
-               MBeanAttribute attr = mbc.attributes.computeIfAbsent(fromBeanConvention(methodName), name -> new MBeanAttribute(name));
+               MBeanAttribute attr = mbc.attributes.computeIfAbsent(fromBeanConvention(methodName), MBeanAttribute::new);
                attr.writable = true;
             } else {
-               MBeanOperation o = mbc.operations.computeIfAbsent(ee.getSimpleName().toString(), name -> new MBeanOperation(name));
+               MBeanOperation o = mbc.operations.computeIfAbsent(ee.getSimpleName().toString(), MBeanOperation::new);
                o.returnType = getTypeName(ee.getReturnType());
                o.desc = docTreeToText(docTrees.getDocCommentTree(e));
                for (VariableElement p : ee.getParameters()) {
@@ -88,7 +88,7 @@ public class JmxDoclet implements Doclet {
    private static String docTreeToText(DocCommentTree commentTree) {
       StringBuilder sb = new StringBuilder();
       if (commentTree != null) {
-         commentTree.getFullBody().stream().forEach(d -> sb.append(d.toString()));
+         commentTree.getFullBody().forEach(d -> sb.append(d.toString()));
       }
       return sb.toString();
    }
@@ -98,13 +98,13 @@ public class JmxDoclet implements Doclet {
       MBeanComponent mbc = new MBeanComponent(cd.getQualifiedName().toString(), objectName);
       mbc.desc = getAnnotationValue(am, "description", "");
 
-      cd.getEnclosedElements().stream().forEach(e -> {
+      cd.getEnclosedElements().forEach(e -> {
          if (e instanceof ExecutableElement) {
             ExecutableElement ee = (ExecutableElement) e;
             for (AnnotationMirror a : ee.getAnnotationMirrors()) {
                String annotationName = ((TypeElement) a.getAnnotationType().asElement()).getQualifiedName().toString();
                if (annotationName.equals(MANAGED_OPERATION_CLASSNAME)) {
-                  MBeanOperation o = mbc.operations.computeIfAbsent(ee.getSimpleName().toString(), name -> new MBeanOperation(name));
+                  MBeanOperation o = mbc.operations.computeIfAbsent(ee.getSimpleName().toString(), MBeanOperation::new);
                   setNameDesc(a.getElementValues(), o);
                   o.returnType = getTypeName(ee.getReturnType());
                   for (VariableElement p : ee.getParameters()) {
@@ -113,7 +113,7 @@ public class JmxDoclet implements Doclet {
                } else if (annotationName.equals(MANAGED_ATTRIBUTE_CLASSNAME)) {
                   // if this is a getter, look at the return type
                   String methodName = ee.getSimpleName().toString();
-                  MBeanAttribute attr = mbc.attributes.computeIfAbsent(fromBeanConvention(methodName), name -> new MBeanAttribute(name));
+                  MBeanAttribute attr = mbc.attributes.computeIfAbsent(fromBeanConvention(methodName), MBeanAttribute::new);
                   if (methodName.startsWith("get") || methodName.startsWith("is")) {
                      attr.type = ee.getReturnType().toString();
                   } else if (ee.getParameters().size() > 0) {
@@ -128,7 +128,7 @@ public class JmxDoclet implements Doclet {
             for (AnnotationMirror a : ve.getAnnotationMirrors()) {
                String annotationName = ((TypeElement) a.getAnnotationType().asElement()).getQualifiedName().toString();
                if (annotationName.equals(MANAGED_ATTRIBUTE_CLASSNAME)) {
-                  MBeanAttribute attr = mbc.attributes.computeIfAbsent(ve.getSimpleName().toString(), name -> new MBeanAttribute(name));
+                  MBeanAttribute attr = mbc.attributes.computeIfAbsent(ve.getSimpleName().toString(), MBeanAttribute::new);
                   attr.type = getTypeName(ve.asType());
                   setNameDesc(a.getElementValues(), attr);
                   setWritable(a.getElementValues(), attr);
@@ -171,8 +171,8 @@ public class JmxDoclet implements Doclet {
 
    private static String getAnnotationValue(AnnotationMirror a, String name, String defaultValue) {
       for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> evp : a.getElementValues().entrySet()) {
-         String annotatioName = evp.getKey().getSimpleName().toString();
-         if (name.equals(annotatioName)) {
+         String annotationName = evp.getKey().getSimpleName().toString();
+         if (name.equals(annotationName)) {
             return evp.getValue().getValue().toString();
          }
       }
@@ -182,10 +182,8 @@ public class JmxDoclet implements Doclet {
    private static void setNameDesc(Map<? extends ExecutableElement, ? extends AnnotationValue> evps, JmxComponent mbc) {
       for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> evp : evps.entrySet()) {
          String name = evp.getKey().getSimpleName().toString();
-         switch (name) {
-            case "description":
-               mbc.desc = evp.getValue().getValue().toString();
-               break;
+         if ("description".equals(name)) {
+            mbc.desc = evp.getValue().getValue().toString();
          }
       }
    }
@@ -200,7 +198,6 @@ public class JmxDoclet implements Doclet {
 
    @Override
    public void init(Locale locale, Reporter reporter) {
-
    }
 
    @Override
@@ -228,21 +225,19 @@ public class JmxDoclet implements Doclet {
 
    @Override
    public SourceVersion getSupportedSourceVersion() {
-      return SourceVersion.RELEASE_8;
+      return SourceVersion.latestSupported();
    }
 
    @Override
    public boolean run(DocletEnvironment docletEnvironment) {
       DocTrees docTrees = docletEnvironment.getDocTrees();
       List<MBeanComponent> mbeans = docletEnvironment.getIncludedElements().stream()
-            .filter(e -> e instanceof TypeElement)
-            .map(e -> (TypeElement) e)
-            .map(e -> toJmxComponent(e, docTrees))
-            .filter(e -> e != null)
-            .collect(Collectors.toList());
-
-      // sort components alphabetically
-      Collections.sort(mbeans);
+                                                     .filter(e -> e instanceof TypeElement)
+                                                     .map(e -> (TypeElement) e)
+                                                     .map(e -> toJmxComponent(e, docTrees))
+                                                     .filter(Objects::nonNull)
+                                                     .sorted()  // sort components alphabetically
+                                                     .collect(Collectors.toList());
 
       HtmlGenerator generator = new JmxHtmlGenerator(jmxTitle(),
             "JMX components",

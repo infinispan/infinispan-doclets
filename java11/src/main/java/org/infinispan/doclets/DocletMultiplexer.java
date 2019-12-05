@@ -6,29 +6,32 @@ import java.util.Set;
 
 import javax.lang.model.SourceVersion;
 
-import org.infinispan.doclets.jmx.JmxDoclet;
-
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.DocletEnvironment;
 import jdk.javadoc.doclet.Reporter;
 import jdk.javadoc.doclet.StandardDoclet;
 
-public class DocletMultiplexer implements Doclet {
-   private Doclet doclets[] = {
+/**
+ * This doclet just delegates to StandardDoclet and also adds our JmxDoclet in the mix. It also attempts to perform
+ * exclusion of classes that have the "private" tag.
+ */
+public final class DocletMultiplexer implements Doclet {
+
+   private final Doclet[] doclets = {
          new StandardDoclet(),
-         new JmxDoclet()
+         //new JmxDoclet()
    };
 
    @Override
    public void init(Locale locale, Reporter reporter) {
-      for(Doclet doclet : doclets) {
+      for (Doclet doclet : doclets) {
          doclet.init(locale, reporter);
       }
    }
 
    @Override
    public String getName() {
-      return this.getClass().getSimpleName();
+      return getClass().getSimpleName();
    }
 
    @Override
@@ -42,13 +45,13 @@ public class DocletMultiplexer implements Doclet {
 
    @Override
    public SourceVersion getSupportedSourceVersion() {
-      return SourceVersion.RELEASE_8;
+      return doclets[0].getSupportedSourceVersion();
    }
 
    @Override
    public boolean run(DocletEnvironment environment) {
       boolean result = true;
-      for(Doclet doclet : doclets) {
+      for (Doclet doclet : doclets) {
          result &= doclet.run(environment);
       }
       return result;

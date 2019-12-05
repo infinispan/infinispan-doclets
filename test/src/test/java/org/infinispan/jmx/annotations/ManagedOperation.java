@@ -5,10 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.METHOD)
 public @interface ManagedOperation {
-   String description() default "";
-   String displayName() default "";
+
    String name() default "";
+
+   String description() default "";
+
+   String displayName() default "";
 }

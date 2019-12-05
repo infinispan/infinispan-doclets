@@ -11,7 +11,8 @@ import com.sun.tools.doclets.standard.Standard;
 import com.sun.tools.javadoc.Main;
 
 public class DocletMultiplexer {
-   private static final Object doclets[] = {
+
+   private static final Object[] doclets = {
          new Standard(),
          new JmxDoclet()
    };
@@ -25,9 +26,9 @@ public class DocletMultiplexer {
       return LanguageVersion.JAVA_1_5;
    }
 
-   public static boolean validOptions(String options[][], DocErrorReporter reporter) {
+   public static boolean validOptions(String[][] options, DocErrorReporter reporter) {
       boolean valid = true;
-      for(Object doclet : doclets) {
+      for (Object doclet : doclets) {
          try {
             Method method = doclet.getClass().getMethod("validOptions", String[][].class, DocErrorReporter.class);
             valid = valid && ((Boolean) method.invoke(doclet, options, reporter));
@@ -41,10 +42,10 @@ public class DocletMultiplexer {
    }
 
    public static int optionLength(String option) {
-      for(Object doclet : doclets) {
+      for (Object doclet : doclets) {
          try {
             Method method = doclet.getClass().getMethod("optionLength", String.class);
-            int l = (Integer)method.invoke(doclet, option);
+            int l = (Integer) method.invoke(doclet, option);
             if (l > 0)
                return l;
          } catch (Exception e) {
@@ -58,10 +59,10 @@ public class DocletMultiplexer {
    public static boolean start(RootDoc root) {
       System.err.println("OLD DOCLETMULTIPLEXER");
       boolean start = true;
-      for(Object doclet : doclets) {
+      for (Object doclet : doclets) {
          try {
             Method method = doclet.getClass().getMethod("start", RootDoc.class);
-            start = start && ((Boolean)method.invoke(doclet, root));
+            start = start && ((Boolean) method.invoke(doclet, root));
          } catch (Exception e) {
             System.err.println(e.getMessage());
             e.printStackTrace();

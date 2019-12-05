@@ -46,7 +46,7 @@ public class JmxDoclet {
    public static boolean start(RootDoc root) throws IOException {
       ClassDoc[] classes = root.classes();
 
-      List<MBeanComponent> mbeans = new LinkedList<MBeanComponent>();
+      List<MBeanComponent> mbeans = new LinkedList<>();
 
       for (ClassDoc cd : classes) {
          MBeanComponent mbean = toJmxComponent(cd);
@@ -72,7 +72,7 @@ public class JmxDoclet {
       return Standard.optionLength(option);
    }
 
-   public static boolean validOptions(String options[][], DocErrorReporter reporter) {
+   public static boolean validOptions(String[][] options, DocErrorReporter reporter) {
       for (String[] option : options) {
          if (option[0].equals("-d"))
             outputDirectory = option[1];
@@ -120,7 +120,7 @@ public class JmxDoclet {
             String annotationName = a.annotationType().qualifiedTypeName();
             if (annotationName.equals(MANAGED_OPERATION_CLASSNAME)) {
                isMBean = true;
-               MBeanOperation o = mbc.operations.computeIfAbsent(method.name(), name -> new MBeanOperation(name));
+               MBeanOperation o = mbc.operations.computeIfAbsent(method.name(), MBeanOperation::new);
                setNameDesc(a.elementValues(), o);
                o.returnType = method.returnType().simpleTypeName();
                for (Parameter p : method.parameters())
@@ -128,7 +128,7 @@ public class JmxDoclet {
 
             } else if (annotationName.equals(MANAGED_ATTRIBUTE_CLASSNAME)) {
                isMBean = true;
-               MBeanAttribute attr = mbc.attributes.computeIfAbsent(fromBeanConvention(method.name()), name -> new MBeanAttribute(name));
+               MBeanAttribute attr = mbc.attributes.computeIfAbsent(fromBeanConvention(method.name()), MBeanAttribute::new);
                // if this is a getter, look at the return type
                if (method.name().startsWith("get") || method.name().startsWith("is")) {
                   attr.type = method.returnType().simpleTypeName();
@@ -149,7 +149,7 @@ public class JmxDoclet {
 
             if (annotationName.equals(MANAGED_ATTRIBUTE_CLASSNAME)) {
                isMBean = true;
-               MBeanAttribute attr = mbc.attributes.computeIfAbsent(field.name(), name -> new MBeanAttribute(name));
+               MBeanAttribute attr = mbc.attributes.computeIfAbsent(field.name(), MBeanAttribute::new);
                attr.type = field.type().simpleTypeName();
                setNameDesc(a.elementValues(), attr);
                setWritable(a.elementValues(), attr);

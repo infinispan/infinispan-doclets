@@ -1,16 +1,16 @@
 package org.infinispan.doclets.jmx;
 
 /**
- * An MBean operation
+ * An MBean operation.
  *
  * @author Manik Surtani
  * @since 4.0
  */
-public class MBeanOperation extends JmxComponent {
+final class MBeanOperation extends JmxComponent {
    public String returnType = "void";
    public String signature = "";
 
-   public MBeanOperation(String name) {
+   MBeanOperation(String name) {
       super(name);
    }
 
@@ -20,7 +20,7 @@ public class MBeanOperation extends JmxComponent {
    }
 
    void addParam(String paramType, String paramName) {
-      if (signature.length() != 0) signature += ", ";
+      if (!signature.isEmpty()) signature += ", ";
       signature += paramType + " " + paramName;
    }
 }

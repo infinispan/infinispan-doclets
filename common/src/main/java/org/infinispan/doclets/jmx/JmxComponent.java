@@ -1,16 +1,16 @@
 package org.infinispan.doclets.jmx;
 
 /**
- * A JMX Component
+ * A JMX Component.
  *
  * @author Manik Surtani
  * @since 4.0
  */
-public abstract class JmxComponent implements Comparable<JmxComponent> {
+abstract class JmxComponent implements Comparable<JmxComponent> {
    public final String name;
    public String desc = "";
 
-   protected JmxComponent(String name) {
+   JmxComponent(String name) {
       this.name = name;
    }
 
@@ -25,10 +25,7 @@ public abstract class JmxComponent implements Comparable<JmxComponent> {
       if (o == null || getClass() != o.getClass()) return false;
 
       JmxComponent that = (JmxComponent) o;
-
-      if (name != null ? !name.equals(that.name) : that.name != null) return false;
-
-      return true;
+      return name != null ? name.equals(that.name) : that.name == null;
    }
 
    @Override
