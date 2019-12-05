@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.infinispan.doclets.html.HtmlGenerator;
 
-public class JmxHtmlGenerator extends HtmlGenerator {
+final class JmxHtmlGenerator extends HtmlGenerator {
    private final String title;
-   List<MBeanComponent> components;
+   private final List<MBeanComponent> components;
 
    public JmxHtmlGenerator(String title, String description, String keywords, List<MBeanComponent> components) {
       super(title, description, keywords);
@@ -108,7 +108,7 @@ public class JmxHtmlGenerator extends HtmlGenerator {
       return sb.toString();
    }
 
-   public static String escapeHTML(String s) {
+   private static String escapeHTML(String s) {
       StringBuilder out = new StringBuilder(Math.max(16, s.length()));
       for (int i = 0; i < s.length(); i++) {
          char c = s.charAt(i);

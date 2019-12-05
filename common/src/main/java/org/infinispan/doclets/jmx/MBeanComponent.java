@@ -4,17 +4,18 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * * An MBean component
+ * An MBean component.
  *
  * @author Manik Surtani
  * @since 4.0
  */
-public class MBeanComponent extends JmxComponent {
-   public String className;
-   public Map<String, MBeanOperation> operations = new TreeMap<>();
-   public Map<String, MBeanAttribute> attributes = new TreeMap<>();
+final class MBeanComponent extends JmxComponent {
 
-   public MBeanComponent(String className, String name) {
+   public final String className;
+   public final Map<String, MBeanOperation> operations = new TreeMap<>();
+   public final Map<String, MBeanAttribute> attributes = new TreeMap<>();
+
+   MBeanComponent(String className, String name) {
       super(name);
       this.className = className;
    }

@@ -8,15 +8,14 @@ import jdk.javadoc.doclet.Doclet;
 /**
  * @author Tristan Tarrant &lt;tristan@infinispan.org&gt;
  * @since 10.0
- * @private
  **/
-public class LambdaOption implements Doclet.Option {
-   final int argumentCount;
-   final String description;
-   final Kind kind;
-   final List<String> names;
-   final String parameters;
-   final BiFunction<String, List<String>, Boolean> processor;
+public final class LambdaOption implements Doclet.Option {
+   private final int argumentCount;
+   private final String description;
+   private final Kind kind;
+   private final List<String> names;
+   private final String parameters;
+   private final BiFunction<String, List<String>, Boolean> processor;
 
    public LambdaOption(int argumentCount, String description, Kind kind, List<String> names, String parameters, BiFunction<String, List<String>, Boolean> processor) {
       this.argumentCount = argumentCount;

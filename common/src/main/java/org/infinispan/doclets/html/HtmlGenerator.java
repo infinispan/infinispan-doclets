@@ -18,17 +18,16 @@ import java.util.regex.Pattern;
  * @author Tristan Tarrant
  */
 public abstract class HtmlGenerator {
-   Map<String, String> subs;
+
+   private final Map<String, String> subs = new HashMap<>();
 
    public HtmlGenerator(String title, String description, String keywords) {
-      subs = new HashMap<>();
       subs.put("title", title);
       subs.put("description", description);
       subs.put("keywords", keywords);
    }
 
    public void generateHtml(String fileName) throws IOException {
-
       try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileName), StandardCharsets.UTF_8))) {
          copyToWriter(pw, "header.html");
          generateContents(pw);
@@ -44,8 +43,8 @@ public abstract class HtmlGenerator {
 
    private void copyToWriter(PrintWriter pw, String resourceName) throws IOException {
       Pattern pattern = Pattern.compile("%%(\\w+)%%");
-      try (BufferedReader r = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(resourceName)))) {
-         for(String line = r.readLine(); line != null; line = r.readLine()) {
+      try (BufferedReader r = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(resourceName)))) {
+         for (String line = r.readLine(); line != null; line = r.readLine()) {
             Matcher matcher = pattern.matcher(line);
             StringBuffer sb = new StringBuffer();
             while (matcher.find()) {
