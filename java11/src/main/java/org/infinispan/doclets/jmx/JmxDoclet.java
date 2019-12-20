@@ -41,10 +41,11 @@ public final class JmxDoclet implements Doclet {
    public static final String MANAGED_OPERATION_CLASSNAME = "org.infinispan.jmx.annotations.ManagedOperation";
    public static final String MBEAN_CLASSNAME = "org.infinispan.jmx.annotations.MBean";
 
-   private static String outputDirectory;
-   private static String title;
+   private String outputDirectory;
 
-   private static String jmxTitle() {
+   private String title;
+
+   private String jmxTitle() {
       String s = "JMX Components";
       if (title != null && !title.isEmpty()) {
          s += " (" + title + ")";

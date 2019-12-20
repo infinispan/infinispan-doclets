@@ -19,6 +19,13 @@
          <artifactId>infinispan-doclets-java11</artifactId>
          <version>${project.version}</version>
       </dependency>
+      <dependency>
+         <!-- TODO: Only needed for javax.annotation.Generated annotation; can be removed after Infinispan removes JDK 8 support -->
+         <groupId>javax.annotation</groupId>
+         <artifactId>javax.annotation-api</artifactId>
+         <version>1.3.1</version>
+         <scope>test</scope>
+      </dependency>
    </dependencies>
 
    <build>
@@ -58,6 +65,9 @@
                            <head>&lt;div class="deprecationBlock"&gt;&lt;b&gt;THIS IS NOT PUBLIC API! This is a private implementation detail and must not be referenced by user code.&lt;/b&gt;&lt;/div&gt;</head>
                         </tag>
                      </tags>
+                     <additionalOptions>
+                        <additionalOption>--excludeGeneratedBy org.infinispan.magic_tools.MagicalCodeGenerator</additionalOption>
+                     </additionalOptions>
                      <additionalJOptions>
                         <!-- DocletMultiplexer needs access to javadoc module internals -->
                         <additionalJOption>-J--add-opens</additionalJOption>
