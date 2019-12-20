@@ -9,7 +9,7 @@ import jdk.javadoc.doclet.Doclet;
  * @author Tristan Tarrant &lt;tristan@infinispan.org&gt;
  * @since 10.0
  **/
-final class LambdaOption implements Doclet.Option {
+public final class LambdaOption implements Doclet.Option {
    private final int argumentCount;
    private final String description;
    private final Kind kind;
@@ -17,7 +17,7 @@ final class LambdaOption implements Doclet.Option {
    private final String parameters;
    private final BiFunction<String, List<String>, Boolean> processor;
 
-   LambdaOption(int argumentCount, String description, Kind kind, List<String> names, String parameters, BiFunction<String, List<String>, Boolean> processor) {
+   public LambdaOption(int argumentCount, String description, Kind kind, List<String> names, String parameters, BiFunction<String, List<String>, Boolean> processor) {
       this.argumentCount = argumentCount;
       this.description = description;
       this.kind = kind;
