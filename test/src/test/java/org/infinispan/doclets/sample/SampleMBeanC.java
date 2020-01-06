@@ -13,6 +13,7 @@ import org.infinispan.jmx.annotations.ManagedOperation;
 @SuppressWarnings("unused")
 @MBean(description = "SampleMBeanC has the same objectName as MBeanA, just to confuse you", objectName = "MBeanA")
 public class SampleMBeanC {
+
    private String stuff = "stuff";
 
    @ManagedAttribute(description = "Gets some stuff", writable = true)

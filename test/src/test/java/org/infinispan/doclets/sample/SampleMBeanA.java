@@ -10,6 +10,7 @@ import org.infinispan.jmx.annotations.ManagedOperation;
 @SuppressWarnings("unused")
 @MBean(description = "Sample MBean A", objectName = "MBeanA")
 public class SampleMBeanA {
+
    private String stuff = "stuff";
 
    @ManagedAttribute(description = "Gets some stuff", writable = true)
