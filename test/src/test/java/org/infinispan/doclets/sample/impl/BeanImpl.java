@@ -1,7 +1,7 @@
 package org.infinispan.doclets.sample.impl;
 
 /**
- * @public
+ * @api.public
  */
 @SuppressWarnings("unused")
 public class BeanImpl {

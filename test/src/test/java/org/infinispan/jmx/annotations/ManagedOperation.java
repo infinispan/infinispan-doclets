@@ -14,9 +14,21 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ManagedOperation {
 
+   /**
+    * Name
+    * @return something
+    */
    String name() default "";
 
+   /**
+    * Description
+    * @return something
+    */
    String description() default "";
 
+   /**
+    * Display name
+    * @return something
+    */
    String displayName() default "";
 }

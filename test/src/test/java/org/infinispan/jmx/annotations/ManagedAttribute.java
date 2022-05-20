@@ -14,9 +14,21 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ManagedAttribute {
 
+   /**
+    * The description
+    * @return description
+    */
    String description() default "";
 
+   /**
+    * Is it writable ?
+    * @return writable
+    */
    boolean writable() default false;
 
+   /**
+    * Display name
+    * @return display name
+    */
    String displayName() default "";
 }

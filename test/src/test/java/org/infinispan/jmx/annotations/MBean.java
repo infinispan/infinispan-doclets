@@ -16,7 +16,15 @@ import java.lang.annotation.Target;
 @Documented
 public @interface MBean {
 
+   /**
+    * object name
+    * @return name
+    */
    String objectName() default "";
 
+   /**
+    * description
+    * @return description
+    */
    String description() default "";
 }
