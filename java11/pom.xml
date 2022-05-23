@@ -5,7 +5,7 @@
    <parent>
       <groupId>org.infinispan.doclets</groupId>
       <artifactId>infinispan-doclets-parent</artifactId>
-      <version>1.4.0.Final</version>
+      <version>1.5.0-SNAPSHOT</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
    <artifactId>infinispan-doclets-java11</artifactId>
